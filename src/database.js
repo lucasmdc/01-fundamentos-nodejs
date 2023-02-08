@@ -20,6 +20,7 @@ export class Database {
     }
 
     select(table, search) {
+        // Nullish coalescing operator (??)
         let data = this.#database[table] ?? []
         
         if (search) {
