@@ -125,7 +125,7 @@ Rotas disponíveis no servidor local:
 
 | Método   | Rota                                  | Descrição                                                                               |
 | -------- | ------------------------------------- | --------------------------------------------------------------------------------------- |
-| `GET`    | `http://localhost:3333/users`         | Lista todos os usuários cadastrados. Também aceita o parâmetro `search` para filtragem. |
+| `GET`    | `http://localhost:3333/users`         | Lista todos os usuários cadastrados. Também aceita os parâmetros `name` e `email` para filtragem. |
 | `POST`   | `http://localhost:3333/users`         | Cria um novo usuário.                                                                   |
 | `PUT`    | `http://localhost:3333/users/:userId` | Atualiza os dados de um usuário pelo `userId`.                                          |
 | `DELETE` | `http://localhost:3333/users/:userId` | Remove um usuário pelo `userId`. |                                                 

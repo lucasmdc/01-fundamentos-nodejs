@@ -22,10 +22,16 @@ export class Database {
     select(table, search) {
         // Nullish coalescing operator (??)
         let data = this.#database[table] ?? []
-        
+
         if (search) {
+            const searchFiltered = Object.fromEntries(
+                Object.entries(search).filter(
+                    ([_, value]) => value != null && value !== ''
+                )
+            )
+            
             data = data.filter(row => {
-                return Object.entries(search).some(([key, value]) => {
+                return Object.entries(searchFiltered).every(([key, value]) => {
                     return row[key].includes(value)
                 })
             })
