@@ -1,71 +1,139 @@
-## Introdução
+# Fundamentos do Node.js
 
-Esse projeto foi construído a partir de um dos módulos presentes dentro __trilha de Node.js__, do programa __Ignite__, da plataforma de ensino __Rocketseat__.
+![Status](https://img.shields.io/badge/status-completed-success) 
+![Type](https://img.shields.io/badge/portfolio-reference-blue) 
+![License](https://img.shields.io/badge/license-MIT-lightgrey) 
 
-## Objetivo
+> 🚀 **Status:** Projeto concluído.  
+> 📚 Desenvolvido para fins educacionais e mantido como referência técnica e portfólio.
 
-O propósito desse projeto foi criar uma __aplicação Back-end__, _sem usar quaisquer outras __libs__ ou __dependências externas___, exceto, é claro, o próprio __Node.js__, que simule um cenário real em que, o __Front-end__, faria _chamadas as __APIs___ e receberia, de volta, alguma _resposta_, dependendo da __solicitação__ que ele realizou. 
+## 📌 Sobre o projeto
 
-As informações obtidas serão providas a partir de um arquivo, em formato _JSON_, que ficará no lado do Back-end, simulando um __Banco de Dados__.
+O **Fundamentos do Node.js** é um projeto desenvolvido a partir de um dos módulos da trilha de **Node.js** do programa **Ignite**, da plataforma de ensino **Rocketseat**.
 
-Dependendo da __solicitação__ que for ser realizada pelo __Front-end__, o __Back-end__ poderá fazer tanto __buscas__ quanto __alterações__ neste __Banco de Dados__.
+## 🎯 Objetivo
 
-## Tecnologias
+O objetivo deste projeto foi desenvolver uma aplicação backend utilizando exclusivamente recursos nativos do **Node.js**, sem frameworks ou dependências externas.
 
-- `node@18.12.1`
-- `npm@8.19.2`
+A proposta simula um cenário real, em que uma aplicação frontend realiza requisições HTTP para uma API e recebe respostas conforme cada operação solicitada.
 
-## Comandos
+Para fins didáticos, os dados são persistidos em um arquivo no formato `JSON`, representando uma camada simples de armazenamento.
+
+Com isso, a aplicação permite executar operações de consulta e alteração de registros, simulando comportamentos comuns de um backend real.
+
+## ⚙️ Pré-requisitos
+
+Para executar o projeto, recomenda-se ter instalado:
+
+* [`Node.js` **18.12.1**](https://nodejs.org/download/release/v18.12.1/)
+* `npm` **8.19.2**
+* [`nvm`](https://github.com/nvm-sh/nvm?tab=readme-ov-file#installing-and-updating) *(recomendado)*
+
+> O `npm` acompanha a instalação padrão do `Node.js`.
+
+Para verificar a versão instalada do `npm`:
+
+```sh
+npm -v
+```
+
+### ⌨️ Usando `nvm`
+
+Instale a versão utilizada neste projeto:
+
+```sh
+nvm install 18.12.1
+```
+
+Em seguida, dentro do projeto, execute:
+
+```sh
+nvm use
+```
+
+> O comando `nvm use` utilizará a versão definida no arquivo `.nvmrc` presente no diretório atual.
+
+## ▶️ Como executar
 
 ```bash
 $ npm run dev
 ```
 
-## Observações
+## 📝 Observações
 
-O comando `npm run dev` só funcionará na versão do Node.js, especificada na seção ___Tecnologias___, pois a flag `--watch` foi uma ___adição__ recente a linguagem, __eliminando__ a necessidade em se instalar __libs externas___ (__nodemon__, por exemplo), para __assistir__ as __mudanças__ feitas nos arquivos editados e __reiniciar__ a __aplicação Back-end__ de forma __automática__. 
+O comando `npm run dev` depende da versão do Node.js indicada na seção **Pré-requisitos**, pois utiliza a flag `--watch`, adicionada nas versões mais recentes da plataforma.
 
-Ainda sobre a necessidade de se utilizar a versão especifica do Node.js, citado no parágrafo acima, este projeto tem uma pasta, nomeada `streams`. _Ela não impacta na execução desta __aplicação Back-end___ mas se, por algum caso, for executado o arquivo `fake-upload-to-http-stream.js`,
-com o servidor rodando a partir do arquivo `stream-http-server.js`, sem a versão do Node.js correta, a funcionalidade `fetch`, que realizará uma requisição HTTP para o servidor em questão, _não irá funcionar_. A seguir, segue um _snippet de código_ que faz a mesma coisa que a funcionalidade `fetch` realizará, porém com uma maior compatibilidade para versões anteriores do Node.js, comparada com a que é requirida para este projeto:
+Esse recurso permite monitorar alterações nos arquivos e reiniciar a aplicação automaticamente, eliminando a necessidade de ferramentas externas como [`nodemon`](https://nodemon.io/).
 
-```Javascript
+### 🌊 Pasta `streams`
+
+O projeto contém uma pasta chamada `streams`, utilizada para estudos complementares sobre manipulação de dados em fluxo no Node.js.
+
+Essa pasta não impacta a execução principal da aplicação. Porém, ao executar o arquivo `fake-upload-to-http-stream.js` em conjunto com `stream-http-server.js`, é necessário utilizar uma versão compatível do Node.js, pois o recurso nativo `fetch` pode não estar disponível em versões anteriores.
+
+### 📦 Sistema de módulos
+
+Este projeto utiliza o padrão `ESModule`, definido no arquivo `package.json`:
+
+```json
+{
+  "type": "module"
+}
+```
+
+Por esse motivo, as variáveis globais `__dirname` e `__filename` não estão disponíveis, como ocorre em projetos `CommonJS`.
+
+Nesses casos, caminhos e arquivos podem ser obtidos por meio de `import.meta.url`.
+
+### 💡 Comentários no código
+
+Informações complementares também podem ser encontradas diretamente nos arquivos-fonte, por meio de comentários explicativos sobre particularidades do Node.js e da implementação proposta.
+
+## ♻️ Retrocompatibilidade
+
+### ⌨️ `fetch`
+
+Em versões anteriores do Node.js, o recurso nativo `fetch` pode não estar disponível.
+
+Nesses casos, requisições HTTP podem ser realizadas utilizando o módulo interno `http`:
+
+```js
 import http from 'node:http'
 
-http.get({
-    method: 'POST',
-    origin: 'localhost',
-    port: 3334
+http.request({
+  method: 'POST',
+  host: 'localhost',
+  port: 3334
 }, (res) => {
-    let data = ''
-    
-    res.on("data", chunck => data += chunck)
+  let data = ''
 
-    res.on("end", () => JSON.stringify(data))
+  res.on('data', chunk => data += chunk)
+
+  res.on('end', () => {
+    console.log(data)
+  })
 })
 ```
 
-No que diz respeito ao tipo de __importação/exportação__ de __módulos__ utilizados neste projeto, foi escolhido o `ESModule` ou invés do `CommonJS`. Essa configuração se encontra presente no arquivo `package.json` (`"type": "module"`).
+## 🔌 API
 
-Por conta desta escolha, as variáveis globais do Node.js `__dirname` e `__filename` __NÃO FUNCIONAM__ quando, o tipo (`"type"`) de __módulo__ utilizado para __importação/exportação__, for o `"module"` do _ESModule_. Com isso, a forma de saber o __path__, por exemplo, nesta situação, será a partir do uso do `import.meta.url`.
+Rotas disponíveis no servidor local:
 
-Algumas outras informações utéis, poderão ser encontradas, dentro de cada arquivo, em forma de comentário, para ajudar na compreensão de algumas particulariedas existentes dentro do Node.js.
+| Método   | Rota                                  | Descrição                                                                               |
+| -------- | ------------------------------------- | --------------------------------------------------------------------------------------- |
+| `GET`    | `http://localhost:3333/users`         | Lista todos os usuários cadastrados. Também aceita o parâmetro `search` para filtragem. |
+| `POST`   | `http://localhost:3333/users`         | Cria um novo usuário.                                                                   |
+| `PUT`    | `http://localhost:3333/users/:userId` | Atualiza os dados de um usuário pelo `userId`.                                          |
+| `DELETE` | `http://localhost:3333/users/:userId` | Remove um usuário pelo `userId`. |                                                 
+## 🗺️ Fluxograma
 
-## API
+A imagem abaixo representa, de forma visual, o fluxo de uma requisição HTTP e o retorno da respectiva resposta em um modelo cliente-servidor.
 
-| Verbo  | API                              | Descrição                                                                                     |
-|--------|----------------------------------|-----------------------------------------------------------------------------------------------|
-| GET    | `http://localhost:3333/users`  | Busca por todas os usuários cadastrados. Também é possível passar o _queryParams_ `search` para realizar uma busca filtrada.
-| POST   | `http://localhost:3333/users`  | Cria um novo usuário.                    |
-| PUT   | `http://localhost:3333/users/:userId`       | Altera um registro de usuário, a partir do seu userId.
-| DELETE | `http://localhost:3333/users/:userId` | Deleta um usuário a partir do seu userId                                         |
+<img style="padding: 1rem 0;" src="https://raw.githubusercontent.com/lucasmdc/01-fundamentos-nodejs/main/assets/fluxograma-request-response.png" alt="Fluxograma do fluxo de requisição e resposta HTTP entre cliente e servidor" />
 
-## Fluxograma
+O exemplo utiliza o cenário clássico entre cliente e servidor, demonstrando etapas como conexão TCP/IP, envio de dados, processamento da aplicação e retorno da resposta.
 
-A figura abaixo mostra, de uma forma mais visual, como que funciona uma __requisição__ e como se é obtida a sua __resposta__:
-
-<img style="padding: 1rem 0;" src="https://raw.githubusercontent.com/lucasmdc/01-fundamentos-nodejs/main/assets/fluxograma-request-response.png" alt="Fluxograma que representa como que uma requisição é feita e como ela é retornada a quem a solicitou, utilizando um cenário cliente (navegador)/servidor" />
-
-Nesse cenário, o exemplo explorado foi um clássico modelo __cliente/servidor__ mas, essa figura acima, pode ser utilizada também para entendermos o que acontece internamente dentro desse projeto, quando nós fazemos as __chamadas__ as __APIs__ para obtermos uma determinada __resposta__ delas. 
+Além do contexto teórico, o diagrama também ajuda a compreender o comportamento interno deste projeto ao realizar chamadas para as APIs implementadas em Node.js.
 
 
 
