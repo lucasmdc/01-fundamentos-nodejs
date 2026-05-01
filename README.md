@@ -98,22 +98,26 @@ Em versões anteriores do Node.js, o recurso nativo `fetch` pode não estar disp
 Nesses casos, requisições HTTP podem ser realizadas utilizando o módulo interno `http`:
 
 ```js
-import http from 'node:http'
+import http from 'node:http';
 
-http.request({
+const req = http.request({
   method: 'POST',
   host: 'localhost',
   port: 3334
 }, (res) => {
-  let data = ''
+  let data = '';
 
-  res.on('data', chunk => data += chunk)
+  res.on('data', chunk => data += chunk);
 
   res.on('end', () => {
-    console.log(data)
-  })
-})
+    console.log(data);
+  });
+});
+
+req.end();
 ```
+
+O exemplo acima é uma releitura simplificada do código presente no arquivo [`fake-upload-to-http-stream.js`](https://github.com/lucasmdc/01-fundamentos-nodejs/blob/main/streams/fake-upload-to-http-stream.js).
 
 ## 🔌 API
 
@@ -134,6 +138,11 @@ A imagem abaixo representa, de forma visual, o fluxo de uma requisição HTTP e 
 O exemplo utiliza o cenário clássico entre cliente e servidor, demonstrando etapas como conexão TCP/IP, envio de dados, processamento da aplicação e retorno da resposta.
 
 Além do contexto teórico, o diagrama também ajuda a compreender o comportamento interno deste projeto ao realizar chamadas para as APIs implementadas em Node.js.
+
+Para complementar a compreensão do fluxograma apresentado acima, publiquei um artigo explicando, de forma didática, os fundamentos da arquitetura TCP/IP aplicados ao modelo cliente-servidor em requisições HTTP:
+[O que é a arquitetura TCP/IP no modelo cliente-servidor para requisições HTTP](https://medium.com/@lucasmdclimao/o-que-%C3%A9-a-arquitetura-tcp-ip-no-modelo-cliente-servidor-para-requisi%C3%A7%C3%B5es-http-917070dcbc8d).
+
+
 
 
 
