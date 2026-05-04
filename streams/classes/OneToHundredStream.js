@@ -1,14 +1,19 @@
 import { Readable } from 'node:stream'
 
-class OneToHundredStream extends Readable {
+export class OneToHundredStream extends Readable {
     index = 1
     _read() {
         const i = this.index++
 
         setTimeout(() => {
-            if (i > 10) {
+            if (i > 100) {
                 this.push(null)
-            } else {
+            } else {    
+                /*
+                    buffer: 
+                        - Representa uma área de memória utilizada para armazenar dados binários (bytes).
+                */
+
                 const buf = Buffer.from(String(i))
     
                 this.push(buf)
@@ -16,10 +21,3 @@ class OneToHundredStream extends Readable {
         }, 1000)
     }
 }
-
-fetch('http://localhost:3334', {
-    method: 'POST',
-    body: new OneToHundredStream()
-}).then(response => response.text())
-.then(data => console.log(data))
-
